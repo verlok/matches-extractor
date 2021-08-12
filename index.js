@@ -68,7 +68,8 @@
     let encodedUri = encodeURI(csvContent);
     let link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "my_data.csv");
+    let date = new Date().toISOString().split("T")[0];
+    link.setAttribute("download", `matches-${date}.csv`);
     document.body.appendChild(link);
     link.click();
   };
@@ -92,14 +93,14 @@
    *
    */
 
-  // Conservative mode, for development
+  // Conservative mode, for development only
   if (!productionMode) {
     let data = crunchData();
     console.log(data);
     return;
   }
 
-  // No conservative mode, will expand and download the file
+  // Production mode, will expand all championships and download the file
   waitUntil(allIsOpen, () => {
     let data = crunchData();
     makeCsv(data);
