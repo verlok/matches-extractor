@@ -87,7 +87,6 @@
 
   // Production mode, will expand all championships and download the file
   waitUntil(allIsOpen, () => {
-    debugger;
     const data = crunchData();
     makeCsv(data);
   });
