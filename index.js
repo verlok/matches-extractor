@@ -106,4 +106,4 @@
     makeCsv(data);
   });
   openAllCollapsed();
-})(false); // 👁 remember to change false to true to make it work effectively 👁
+})(false); // ⚠️👁 IMPORTANT! Change this "false" to "true" :)
