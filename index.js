@@ -1,6 +1,6 @@
 ((productionMode = false) => {
-  let openAllCollapsed = () => {
-    let collapsedElements = document.querySelectorAll(
+  const openAllCollapsed = () => {
+    const collapsedElements = document.querySelectorAll(
       ".suf-CompetitionMarketGroup-collapsed"
     );
     for (let element of collapsedElements) {
@@ -9,11 +9,11 @@
   };
 
   // Extract team names, all in a single array
-  let getTeamNames = (championshipContainer) => {
-    let teamNameEls = championshipContainer.querySelectorAll(
+  const getTeamNames = (championshipContainer) => {
+    const teamNameEls = championshipContainer.querySelectorAll(
       ".rcl-ParticipantFixtureDetailsTeam_TeamName"
     );
-    let outArr = [];
+    const outArr = [];
     for (let teamNameEl of teamNameEls) {
       outArr.push(teamNameEl.innerText);
     }
@@ -21,61 +21,61 @@
   };
 
   // Extract odds, all in a single array
-  let getOddsArr = (championshipContainer) => {
-    let oddsEls = championshipContainer.querySelectorAll(
+  const getOddsArr = (championshipContainer) => {
+    const oddsEls = championshipContainer.querySelectorAll(
       ".sgl-ParticipantOddsOnly80_Odds"
     );
-    let oddsArr = [];
+    const oddsArr = [];
     for (let oddsEl of oddsEls) {
       oddsArr.push(oddsEl.innerText);
     }
     return oddsArr;
   };
 
-  let crunchData = () => {
-    let openChampionshipContainers = document.querySelectorAll(
+  const crunchData = () => {
+    const openChampionshipContainers = document.querySelectorAll(
       ".suf-CompetitionMarketGroup:not(.suf-CompetitionMarketGroup-collapsed)"
     );
-    let data = [];
+    const data = [];
     for (championshipContainer of openChampionshipContainers) {
-      let teamNamesArr = getTeamNames(championshipContainer);
-      let oddsArr = getOddsArr(championshipContainer);
+      const teamNamesArr = getTeamNames(championshipContainer);
+      const oddsArr = getOddsArr(championshipContainer);
 
-      debugger;
+      //debugger;
 
       // Get matches and odds together
-      let matchesCount = teamNamesArr.length / 2;
+      const matchesCount = teamNamesArr.length / 2;
       for (let matchIndex = 0; matchIndex < matchesCount; matchIndex += 1) {
-        let teamA = teamNamesArr[matchIndex * 2];
-        let teamB = teamNamesArr[matchIndex * 2 + 1];
-        let odds1 = oddsArr[matchIndex];
-        let oddsX = oddsArr[matchIndex + matchesCount];
-        let odds2 = oddsArr[matchIndex + matchesCount * 2];
+        const teamA = teamNamesArr[matchIndex * 2];
+        const teamB = teamNamesArr[matchIndex * 2 + 1];
+        const odds1 = oddsArr[matchIndex];
+        const oddsX = oddsArr[matchIndex + matchesCount];
+        const odds2 = oddsArr[matchIndex + matchesCount * 2];
         data.push([teamA, teamB, odds1, oddsX, odds2]);
       }
     }
     return data;
   };
 
-  let makeCsv = (data) => {
-    let csvContent = "data:text/csv;charset=utf-8,";
+  const makeCsv = (data) => {
+    const csvContent = "data:text/csv;charset=utf-8,";
 
     data.forEach(function (rowArray) {
-      let row = rowArray.join(",");
+      const row = rowArray.join(",");
       csvContent += row + "\r\n";
     });
 
-    let encodedUri = encodeURI(csvContent);
-    let link = document.createElement("a");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    let date = new Date().toISOString().split("T")[0];
+    const date = new Date().toISOString().split("T")[0];
     link.setAttribute("download", `matches-${date}.csv`);
     document.body.appendChild(link);
     link.click();
   };
 
-  let waitUntil = (conditionFn, callback) => {
-    let interval = setInterval(() => {
+  const waitUntil = (conditionFn, callback) => {
+    const interval = setInterval(() => {
       if (conditionFn()) {
         clearInterval(interval);
         callback();
@@ -83,7 +83,7 @@
     }, 500);
   };
 
-  let allIsOpen = () =>
+  const allIsOpen = () =>
     !document.querySelectorAll(".suf-CompetitionMarketGroup-collapsed").length;
 
   /*
@@ -95,14 +95,14 @@
 
   // Conservative mode, for development only
   if (!productionMode) {
-    let data = crunchData();
+    const data = crunchData();
     console.log(data);
     return;
   }
 
   // Production mode, will expand all championships and download the file
   waitUntil(allIsOpen, () => {
-    let data = crunchData();
+    const data = crunchData();
     makeCsv(data);
   });
   openAllCollapsed();
