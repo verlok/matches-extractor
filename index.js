@@ -33,13 +33,11 @@
   };
 
   let crunchData = () => {
-    let openChampionshipRows = document.querySelectorAll(
-      ".suf-CompetitionMarketGroup_Open"
+    let openChampionshipContainers = document.querySelectorAll(
+      ".suf-CompetitionMarketGroup:not(.suf-CompetitionMarketGroup-collapsed)"
     );
     let data = [];
-    for (championshipRow of openChampionshipRows) {
-      let championshipContainer = championshipRow.parentElement;
-
+    for (championshipContainer of openChampionshipContainers) {
       let teamNamesArr = getTeamNames(championshipContainer);
       let oddsArr = getOddsArr(championshipContainer);
 
@@ -87,13 +85,11 @@
   let allIsOpen = () =>
     !document.querySelectorAll(".suf-CompetitionMarketGroup-collapsed").length;
 
-  
-
   /*
    *
    * NOW LET'S
    * RUN THIS!
-   * 
+   *
    */
 
   // Conservative mode, for development
@@ -109,5 +105,4 @@
     makeCsv(data);
   });
   openAllCollapsed();
-
 })(false); // 👁 remember to change false to true to make it work effectively 👁
